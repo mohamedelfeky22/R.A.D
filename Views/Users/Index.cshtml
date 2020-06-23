@@ -1,0 +1,91 @@
+﻿@model IEnumerable<R.A.D.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="text-center " style="margin-bottom:10px;"><i class="fa fa-user-circle"></i> Users Mangment</h2>
+
+<input id="myInput" type="text" placeholder="Search with name or Email or phone number Any thing you want" style="margin-bottom:20px; margin-left: 500px;margin-top: 20px;width: 40%; border: 0; padding-bottom: 12px;border-bottom: 2px solid #E7EBED;color: #838383;font-size: 16px;height:40px;">
+
+
+<div class="container">
+    <table class="table table-bordered" id="myTable">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Photo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Photo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.ActionLink("Reported", "Details", new { Id = item.Id }, new { @class = "btn btn-info" }) |
+                    @Html.ActionLink("  Delete", "Delete", new { Id = item.Id }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+
+
+@section Scripts{
+
+    <script>
+        $(function () {
+
+            /////////////////////////////////////search area
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+
+
+        });
+    </script>
+}
+
+
+
+
+
+

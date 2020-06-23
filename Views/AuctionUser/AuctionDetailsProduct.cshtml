@@ -1,0 +1,92 @@
+﻿@model R.A.D.Models.ViewModels.AuctionVM
+
+@{
+    ViewBag.Title = "AuctionDetailsProduct";
+}
+
+@if (TempData["SM"] != null)
+{
+    <div class="alert alert-success"> @TempData["SM"]</div>
+}
+
+<div>@Html.ActionLink("back to products", "AuctionProductsList", "AuctionUser", new { @class = "btn btn-default", style = "border:1px solid black;margin-left:100px;" }) </div>
+
+<table class="table table-bordered container" style="margin-top:30px;">
+    <tr>
+        <td>Product Code</td>
+        <td>@Html.DisplayFor(model => model.Id) : Auction</td>
+    </tr>
+    <tr>
+        <td>Name :</td>
+        <td>@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td>@Html.DisplayFor(model => model.Description)</td>
+    </tr>
+    <tr>
+        <td>Auction Started in</td>
+        <td>@Html.DisplayFor(model => model.Auction_Started)</td>
+    </tr>
+    <tr>
+        <td>Auction Ends in </td>
+        <td>@Model.Auction_Ended.ToString()</td>
+    </tr>
+
+    <tr>
+        <td>Starting Price</td>
+        <td>@Html.DisplayFor(model => model.StartingPrice)</td>
+    </tr>
+    <tr>
+        <td>Last Price</td>
+        <td>@Html.DisplayFor(model => model.LastPrice)</td>
+    </tr>
+
+
+
+
+</table>
+<form action="/AuctionUser/RaisePrice/@Model.Id" method="post" class="table table-bordered container" style="margin-top:30px;">
+
+    <table class="table table-bordered container" style="margin-top:30px;">
+        <tr>
+            <td>Raise Price</td>
+            <td><input type="text" name="RaisePrice" id="RaisePrice" /></ td >
+            <td> <input type="submit" name="Raise" value="Raise Price" /></ td >
+        </tr>
+
+    </table>
+</form>
+
+<a href="#" class="btn btn-success" style="padding:10px;font-size:22px;font-weight:600;margin-left:670px;width:100px;height:50px;">Chat</a>
+
+<h3 class="text-center" style="margin-top:30px;margin-bottom:30px;background-color:#DDD">Gallery Area</h3>
+
+<div class="container">
+    <div class="row">
+
+        @if (!Model.GalleryImages.Any())
+        {
+            <div class="col-lg-12">
+                <h4 class="text-danger text-center bg-danger">There are no gallery images for this product.</h4>
+            </div>
+        }
+
+        else
+        {
+            foreach (var image in Model.GalleryImages)
+            {
+                <div class="col-lg-3">
+                    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="~/Images/Uploads/Products/@Model.Id/@image" style="margin-bottom:20px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+</div>

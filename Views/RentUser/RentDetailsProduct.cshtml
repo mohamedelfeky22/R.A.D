@@ -1,0 +1,63 @@
+﻿@model R.A.D.Models.ViewModels.RentVM
+
+@{
+    ViewBag.Title = "Details of Product";
+}
+
+<div>@Html.ActionLink("back to products", "RentProductsList", "RentUser", new { @class = "btn btn-default", style = "border:1px solid black;margin-left:100px;" }) </div>
+
+<table class="table table-bordered container" style="margin-top:30px;">
+    <tr>
+        <td>Product Code</td>
+        <td>@Html.DisplayFor(model => model.Id) : Rent</td>
+    </tr>
+    <tr>
+        <td>Name :</td>
+        <td>@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <td>Price</td>
+        <td>@Html.DisplayFor(model => model.Price)$</td>
+    </tr>
+    <tr>
+        <td>Renting Period</td>
+        <td>@Html.DisplayFor(model => model.Renting_Period)</td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td>@Html.DisplayFor(model => model.Description)</td>
+    </tr>
+
+</table>
+<a href="#" class="btn btn-success" style="padding:10px;font-size:22px;font-weight:600;margin-left:670px;width:100px;height:50px;">Chat</a>
+
+<h3 class="text-center" style="margin-top:30px;margin-bottom:30px;background-color:#DDD">Gallery Area</h3>
+
+<div class="container">
+    <div class="row">
+
+        @if (!Model.GalleryImages.Any())
+        {
+            <div class="col-lg-12">
+                <h4 class="text-danger text-center bg-danger">There are no gallery images for this product.</h4>
+            </div>
+        }
+
+        else
+        {
+            foreach (var image in Model.GalleryImages)
+            {
+                <div class="col-lg-3">
+                    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="~/Images/Uploads/Products/@Model.Id/Gallery/Thumbs/@image" style="margin-bottom:20px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+

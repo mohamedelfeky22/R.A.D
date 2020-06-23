@@ -1,0 +1,182 @@
+﻿@model R.A.D.Models.ViewModels.AuctionVM
+
+@{
+    ViewBag.Title = "Add_Auction_Product";
+}
+
+
+
+
+<div>
+    @Html.ActionLink("Back to Products", "ListOfAuctionProducts", "Auction", null, new { @class = "btn btn-default", style = "margin-left:70px;border:1px solid black" })
+</div>
+
+
+<h3 class="text-center col-lg-12" style="margin-top:10px;">Add new product </h3>
+
+
+<section class="cart-total-page spad" style="margin-top:10px;">
+    <div class="container">
+
+        @using (Html.BeginForm("Add_Auction_Product", "Auction", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">Name</p>
+
+                        </div>
+                        <div class="col-lg-10">
+                            @Html.EditorFor(model => model.Name, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    style = "width: 100%; border: 0; padding-bottom: 12px;border-bottom: 2px solid #E7EBED;color: #838383;  font-size: 16px;margin-bottom: 32px;height:30px;",
+                                    placeholder = "Name"
+                                }
+                            })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">Country Of Orgin</p>
+
+                        </div>
+                        <div class="col-lg-10">
+                            @Html.EditorFor(model => model.CountryOfOrgin, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    style = "width: 100%; border: 0; padding-bottom: 12px;border-bottom: 2px solid #E7EBED;color: #838383;  font-size: 16px;margin-bottom: 32px;height:30px;",
+                                    placeholder = "Country Of Orgin"
+                                }
+                            })
+
+                            @Html.ValidationMessageFor(model => model.CountryOfOrgin, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">Details</p>
+
+                        </div>
+                        <div class="col-lg-10">
+
+                            @Html.EditorFor(model => model.Details, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    style = "width: 100%; border: 0; padding-bottom: 12px;border-bottom: 2px solid #E7EBED;color: #838383;  font-size: 16px;margin-bottom: 32px;height:30px;",
+                                    placeholder = "Name"
+                                }
+                            })
+
+                            @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">@Html.LabelFor(model => model.Description)</p>
+                        </div>
+                        <div class="col-lg-10">
+
+                            @Html.TextAreaFor(model => model.Description, new { style = "width: 100%; border: 0; padding-bottom: 12px;border-bottom: 2px solid #E7EBED; color: #838383;  font-size: 16px;margin-bottom: 32px;height:50px;", type = "Description", placeholder = "Description" })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">
+                                Starting Price
+                            </p>
+                        </div>
+
+                        <div class="col-lg-10">
+                            @Html.EditorFor(model => model.StartingPrice, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    style = "width: 100%; border: 0; padding-bottom: 12px;border-bottom: 2px solid #E7EBED;color: #838383;  font-size: 16px;margin-bottom: 32px;height:30px;",
+                                    placeholder = "Starting Price"
+                                }
+                            })
+                            @Html.ValidationMessageFor(model => model.StartingPrice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">Auction Ended</p>
+                        </div>
+                        <div class="col-lg-10">
+                            @Html.EditorFor(model => model.Auction_Ended, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    style = "width: 100%; border: 0; padding-bottom: 12px;border-bottom: 2px solid #E7EBED;color: #838383;  font-size: 16px;margin-bottom: 32px;height:30px;",
+                                    placeholder = "Auction Ended"
+                                }
+                            })
+
+                            @Html.ValidationMessageFor(model => model.Auction_Ended, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">@Html.LabelFor(model => model.ImageName)</p>
+                        </div>
+                        <div class="col-lg-10">
+                            <input type="file" name="file" id="ImageUpload" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type="submit" value="Add" class="btn btn-success" style="float:right" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3">  <img id="ImgPreview" src="#" style="display:none" /></div>
+            </div>
+        }
+    </div>
+
+</section>
+
+<hr />
+
+
+@section Scripts{
+    <script>
+        //--------------------------------------------------Read Image
+
+        $(document).ready(function () {
+            function ReadUrl(input) {
+                console.log(input);
+                if (input.files && input.files[0]) {
+
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $("#ImgPreview").css("display", "block")
+                            .attr("src", e.target.result)
+                            .width(600)
+                            .height(400);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#ImageUpload").change(function () {
+                ReadUrl(this);
+            });
+        });
+    </script>
+}
+

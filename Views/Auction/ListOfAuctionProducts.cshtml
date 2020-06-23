@@ -1,0 +1,110 @@
+﻿@model IEnumerable<R.A.D.Models.Auction.Auction_Product>
+
+@{
+    ViewBag.Title = "List Of Auction Products";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+
+@if (TempData["SM"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SM"]
+    </div>
+}
+
+@if (TempData["MM"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["MM"]
+    </div>
+}
+
+<input id="myInput" type="text" placeholder="Search with name or description or Any thing you want" style="margin-bottom:30px; margin-left: 500px;margin-top: 20px;width: 40%; border: 0; padding-bottom: 12px;border-bottom: 2px solid #E7EBED;color: #838383;font-size: 16px;height:40px;">
+
+<h3 class="text-center">Auction Products</h3>
+<div class="container-fluid" style="margin-top:20px">
+    <div style="float:right;margin-bottom:10px">
+        @Html.ActionLink("  Add Product", "Add_Auction_Product", null, new { @class = "btn btn-success fa fa-plus", style = "padding : 10px;font-size:16px" })
+    </div>
+
+
+    <table class="table table-bordered text-center" id="myTable">
+        <tr>
+            <th>     Code       </th>
+            <th>     Name       </th>
+            <th>     Description     </th>
+            <th>     Country Of Orgin     </th>
+            <th>     Details     </th>
+            <th>     Starting Price     </th>
+            <th>     Last Price     </th>
+            <th>     Auction Started in </th>
+            <th>     Auction Ends   in</th>
+            <th>    Photo  </th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var product in ViewBag.OnePageOfProducts)
+        {
+    <tr>
+        <td>@product.Id : Auction</td>
+        <td>@product.Name</td>
+        <td>@product.Description</td>
+
+        <td>@product.CountryOfOrgin</td>
+        <td>@product.Details</td>
+        <td>@product.StartingPrice</td>
+
+        <td>@product.LastPrice</td>
+        <td>@product.Auction_Started</td>
+        <td>@product.Auction_Ended</td>
+        <td>
+            <a href="/Auction/UpdateProduct/@product.Id">
+                <img src="~/Images/Uploads/Products/@product.Id/Thumbs/@product.ImageName" height="200" width="200" />
+            </a>
+        </td>
+        <td>
+            @Html.ActionLink("  Update", "UpdateProduct", new { Id = product.Id }, new { @class = "btn btn-info fa fa-pencil-square-o", style = "padding : 7px;font-size:16px" })
+
+            @Html.ActionLink("  Delete", "DeleteProduct", new { Id = product.Id }, new { @class = "btn btn-danger fa fa-trash", style = "margin-top:6px; padding : 7px;font-size:16px" })
+        </td>
+
+    </tr>
+        }
+    </table>
+</div>
+
+<div class="text-center">
+    @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts,
+        page => Url.Action("ListOfProducts",
+        new
+        {
+            page,
+        catId = ViewBag.SelectCategory
+        }))
+
+</div>
+
+@section Scripts{
+
+    <script>
+        $(function () {
+
+            /////////////////////////////////////search area
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+
+
+        });
+
+
+
+    </script>
+}
+

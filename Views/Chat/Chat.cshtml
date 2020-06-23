@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewBag.Title = "Chat";
+
+}
+<style>
+    .connection {
+        background-color: #b6ff00;
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+
+    .chatBox {
+        border: 2px solid #000;
+        margin-left: 250px;
+        margin-top: 20px;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .messages {
+        padding: 10px;
+        border: 1px solid #ff0;
+        height: 400px;
+        margin: 10px;
+        overflow: auto;
+    }
+
+    .inmessagdv {
+        margin: 10px;
+        width: 97.5%;
+    }
+
+    .inmessage {
+        height: 65px;
+        max-height: 65px;
+        min-height: 65px;
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .message {
+        background: #ff0;
+        border-radius: 20px;
+        padding: 10px;
+        margin-bottom: 5px;
+    }
+</style>
+
+@*<div>
+        <input type="text" id="mess" />
+
+    <br />
+        <div id="message">
+            <ul id="ulchat"></ul>
+        </div>
+    </div>*@
+<section class="container pt-5">
+    <div class="row">
+        <div class="col-9">
+            <div id="chatBox" class="chatBox">
+                <div id="messages" class="messages" style="display:none;">
+
+                </div>
+                <div class="inmessagdv">
+                    <textarea id="mess" class="inmessage"></textarea>
+                    <input type="button" value="send" id="SendBtn" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3 pt-5" id="Users Send Messages">
+            @if (User.IsInRole("Admin"))
+            {
+                <div id="UsersMessage"></div>
+            }
+        </div>
+    </div>
+</section>
+
+<script src="~/Scripts/jquery-2.2.4.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.2.js"></script>
+<script src="/signalr/hubs"></script>
+<script>
+    var conectedusers = [];
+    conectedusers.push("8b61c0f9-7c10-4100-8eef-783e65dbf13b")
+    prox = $.connection.chat;
+    $.connection.hub.start();
+  var  touserid = "8b61c0f9-7c10-4100-8eef-783e65dbf13b";
+  function getUserData(item) {
+
+      touserid = $.trim($(item).find("#touserid").text());
+        prox.server.getMessages(touserid);
+    }
+
+
+    prox.client.newMessage = function (FromUserName, fromUserId, mssage) {
+        debugger;
+        var appenddiv = "<div class'connection' onclick='getUserData(this)' style='background-color:#b6ff00;'>\
+                                 <span id='connectionName'   >" + FromUserName + "</span>\
+                                 <label id='touserid' style='display:none;' >"+fromUserId+"<label/>\
+                            </div>";
+        if (conectedusers.findIndex(element=>element == fromUserId) < 0) {
+            conectedusers.push(fromUserId);
+            if ($("#UsersMessage").length) {
+                $("#UsersMessage").append(appenddiv);
+            }
+            $("#messages").html('');
+        }
+        $("#messages").append(initmsg(FromUserName, mssage));
+        $("#messages").show();
+        $("#messages .message").each(function (i, dv) {
+            var user = $(dv).find('.usr').text();
+            var message = $(dv).find('.msg').text();
+
+        });
+
+    }
+
+    prox.client.newselfMessage = function (FromUserName, fromUserId,mssage)
+    {
+        $("#messages").append(initmsg(FromUserName, mssage));
+        $("#messages").show();
+    }
+
+    $("#SendBtn").click(function()
+    {
+        prox.server.sendPrivateMessage(touserid, $("#mess").val())
+        $("#mess").val('');
+    }
+        )
+
+    function initmsg(name, mess) {
+        return "<div class='message'>\
+                  <b class='usr'>"+ name + "</b>\
+                  <span class='msg'>"+ mess + "</span>\
+                 </div>";
+    }
+
+    prox.client.getAllMessages = function (CurrentChatMessages)
+    {
+        debugger;
+        $("#messages").empty();
+        for (i = 0; i < CurrentChatMessages.length; i++)
+        {
+            $("#messages").append(initmsg(CurrentChatMessages[i].userName, CurrentChatMessages[i].messagetext))
+        }
+    }
+
+</script>

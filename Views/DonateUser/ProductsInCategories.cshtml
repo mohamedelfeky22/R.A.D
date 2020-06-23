@@ -1,0 +1,104 @@
+﻿@model IEnumerable<RAD.Models.ViewModels.DonationVM>
+
+@{
+    ViewBag.Title = "Donation Products";
+}
+@using PagedList.Mvc;
+@using PagedList;
+
+<input id="myInput"
+       type="text"
+       placeholder="Search with name or description or Any thing you want"
+       style="margin-left: 500px;
+                  margin-top: 20px;
+                  width: 40%;
+                  border: 0;
+                  padding-bottom: 12px;
+                  border-bottom: 2px solid #E7EBED;
+                  color: #838383;
+                  font-size: 16px;
+                  height:40px;">
+
+
+<select id="SelectCategory" name="SelectCategory"
+        style="width: 15%; border: 0; padding-bottom: 12px;border-bottom: 2px solid #E7EBED;color: #838383;height:30px;margin-left:50px; font-size:14px">
+    <option value="0">All</option>
+    @foreach (var item in ViewBag.Categories)
+    {
+        if (ViewBag.SelectCategory == item.Value)
+        {
+            <option selected="selected" value="@item.Value">@item.Text  </option>
+        }
+        else
+        {
+            <option value="@item.Value">@item.Text  </option>
+        }
+    }
+</select>
+
+
+
+<!-- Latest Product Begin -->
+<h2 class="text-center"> <img src="~/Content/img/Donate.png" style="margin-bottom: 50px;margin-top:50px;" height="50" width="50" /> Donation Products</h2>
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var product in ViewBag.OnePageOfProducts)
+        {
+            <div class=" text-center  col-lg-3 x">
+                <a href="/DonateUser/DetailsProduct/@product.Id">
+                    <img src="~/Images/Uploads/Products/@product.Id/@product.ImageName" height="400" width="350" />
+                </a>
+                <div> @product.Id : Donate</div>
+                <div>@product.Name</div>
+            </div>
+        }
+    </div>
+
+</div>
+
+<!-- Latest Product End -->
+<div class="text-center">
+    @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts,
+        page => Url.Action("ListOfProducts",
+        new
+        {
+            page,
+        catId = ViewBag.SelectCategory
+        }))
+
+</div>
+
+@section Scripts{
+
+    <script>
+        $(function () {
+
+            /////////////////////////////////////search area
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("div .x").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            //select products from specified categorey
+            $("#SelectCategory").on("change", function (e) {
+                var Id = $(this).val();
+                if (Id) {
+                    window.location = "/DonateUser/ProductsInCategories?catId=" + Id;
+                }
+                return false;
+            });
+        });
+
+
+
+    </script>
+
+
+
+
+
+}
